@@ -43,6 +43,12 @@ colors = [
     "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
     "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
 
+@app.route('/')
+def index():
+    bar_labels=labels
+    bar_values=values
+    return render_template('index.html', title='Corona Fallzahlen')
+
 @app.route('/bar')
 def bar():
     bar_labels=labels
