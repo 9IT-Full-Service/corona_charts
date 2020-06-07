@@ -72,25 +72,25 @@ span.menu {
   margin-left: auto;
 }
 
-@media all and (max-width: 730px){
+/* @media all and (max-width: 730px){
   .ce-example__header-menu {
     margin-left: 0;
     margin-top: 10px;
     flex-basis: 100%;
     font-size: 14px;
   }
-}
+} */
 
 .ce-example__header-menu a {
   margin-left: 20px;
 }
 
-@media all and (max-width: 730px){
+/* @media all and (max-width: 730px){
   .ce-example__header-menu a {
     margin-left: 0;
     margin-right: 15px;
   }
-}
+} */
 
 .ce-example__content {
   max-width: 1100px;
@@ -157,12 +157,12 @@ span.menu {
   text-decoration: none;
 }
 
-@media all and (max-width: 730px){
+/* @media all and (max-width: 730px){
   .ce-example__header,
   .ce-example__content{
     padding: 0 20px;
   }
-}
+} */
 
 /**
  * JSON highlighter
