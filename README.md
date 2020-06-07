@@ -12,7 +12,7 @@ This image speeds up the building of the chart image, because not every build re
 
     docker run --rm --name corona -p 8080:8080 coronacharts:latest
 
-Start a web browser and open the website [Start a web browser and open the website http://localhost:8080/](http://localhost:8080/)
+Start a web browser and open the website [Start a web browser and open the website [http://localhost:8080/](http://localhost:8080/)
 
 ### create the corona chart image manually.
 
