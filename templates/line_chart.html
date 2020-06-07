@@ -8,14 +8,15 @@
 
 <body>
   <div class="grid-container">
-    <div id="nav" style="position:absolute; top:10px; left:10px;">
+    <div id="nav">
       {% include "nav.tmpl" %}
     </div>
     <div class="content">
       <center>
         <h1>{{ title }}</h1>
-
-        <canvas id="chart" width="1000" height="600"></canvas>
+      </center>
+      <center>
+        <canvas id="chart"></canvas>
         <script>
 
           // bar chart data
