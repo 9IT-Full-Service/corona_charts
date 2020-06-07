@@ -10,10 +10,10 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 5em 1fr 10em;
   gap: 1px 1px;
-  grid-template-areas: "header header " "content content" "footer footer";
+  grid-template-areas: "header" "content" "footer";
 }
 
 .nav { grid-area: header;
@@ -27,9 +27,10 @@ body {
 .footer { grid-area: footer;
 
 }
-span.menu {
+div.menu {
   float:left;
-  padding: 10px;
+  padding: 5px;
+  font-size: 10px;
 }
 .menu a:link, a:visited {
   text-decoration: none;
