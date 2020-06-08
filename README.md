@@ -1,22 +1,15 @@
 
 ## Corona Charts Essen
 
-### First build python docker image
+### create the corona chart image manually.
 
-First the python image must be created. This image is then used for the Corona Chart Docker image.
-This image speeds up the building of the chart image, because not every build requires a new python to be created.
-
-    docker build -t coronabase python-base/
+    docker build -t coronacharts:latest .
 
 ### Run Corona-Charts docker container
 
     docker run --rm --name corona -p 8080:8080 coronacharts:latest
 
 Start a web browser and open the website [Start a web browser and open the website [http://localhost:8080/](http://localhost:8080/)
-
-### create the corona chart image manually.
-
-    docker build -t coronacharts:latest .
 
 ### Run docker-compose
 
