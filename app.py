@@ -29,9 +29,20 @@ def read_average():
         # print ("Label: ", clabels, " cases: ", ccases)
     return (clabels, ccases)
 
+def read_probes():
+    clabels = []
+    ccases = []
+    data = json.loads(open('probes.json','r').read())
+    for label in data['cases'][0]:
+        clabels.append(label)
+        ccases.append(data['cases'][0][label])
+        # print ("Label: ", clabels, " cases: ", ccases)
+    return (clabels, ccases)
+
 
 labels, values = read_cases()
 averagelabels, averagevalues = read_average()
+probelabels, probevalues = read_probes()
 # values = [
 #     967.67, 1190.89, 1079.75, 1349.19,
 #     2328.91, 2504.28, 2873.83, 4764.87,
@@ -61,6 +72,19 @@ def bar_x(id):
     bar_labels=labels[-id:]
     bar_values=values[-id:]
     return render_template('bar_chart.html', title='Corona Fallzahlen', max=900, labels=bar_labels, values=bar_values)
+
+@app.route('/probes')
+def probes():
+    line_labels=probelabels
+    line_values=probevalues
+    return render_template('probes_line_chart.html', title='Corona Probes', max=15000, labels=line_labels, values=line_values)
+
+@app.route('/probes/<id>')
+def probes_x(id):
+    id = int(id)
+    line_labels=probelabels[-id:]
+    line_values=probevalues[-id:]
+    return render_template('probes_line_chart.html', title='Corona Probes', max=15000, labels=line_labels, values=line_values)
 
 @app.route('/line')
 def line():
