@@ -77,14 +77,14 @@ def bar_x(id):
 def probes():
     line_labels=probelabels
     line_values=probevalues
-    return render_template('probes_line_chart.html', title='Corona Probes', max=17000, labels=line_labels, values=line_values)
+    return render_template('probes_line_chart.html', title='Corona Probes', max=19000, labels=line_labels, values=line_values)
 
 @app.route('/probes/<id>')
 def probes_x(id):
     id = int(id)
     line_labels=probelabels[-id:]
     line_values=probevalues[-id:]
-    return render_template('probes_line_chart.html', title='Corona Probes', max=17000, labels=line_labels, values=line_values)
+    return render_template('probes_line_chart.html', title='Corona Probes', max=19000, labels=line_labels, values=line_values)
 
 @app.route('/line')
 def line():
