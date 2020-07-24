@@ -104,27 +104,27 @@ def line_x(id):
 def averagebar():
     bar_labels=averagelabels
     bar_values=averagevalues
-    return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=15, labels=bar_labels, values=bar_values)
+    return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=12, labels=bar_labels, values=bar_values)
 
 @app.route('/averageline')
 def averageline():
     line_labels=averagelabels
     line_values=averagevalues
-    return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=15, labels=line_labels, values=line_values)
+    return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=12, labels=line_labels, values=line_values)
 
 @app.route('/averagebar/<id>')
 def averagebar_x(id):
     id = int(id)
     bar_labels=averagelabels[-id:]
     bar_values=averagevalues[-id:]
-    return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=15, labels=bar_labels, values=bar_values)
+    return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=12, labels=bar_labels, values=bar_values)
 
 @app.route('/averageline/<id>')
 def averageline_x(id):
     id = int(id)
     line_labels=averagelabels[-id:]
     line_values=averagevalues[-id:]
-    return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=15, labels=line_labels, values=line_values)
+    return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=12, labels=line_labels, values=line_values)
 
 
 @app.route('/pie')
