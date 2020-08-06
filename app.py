@@ -64,40 +64,40 @@ def index():
 def bar():
     bar_labels=labels
     bar_values=values
-    return render_template('bar_chart.html', title='Corona Fallzahlen', max=1300, labels=bar_labels, values=bar_values)
+    return render_template('bar_chart.html', title='Corona Fallzahlen', max=1400, labels=bar_labels, values=bar_values)
 
 @app.route('/bar/<id>')
 def bar_x(id):
     id = int(id)
     bar_labels=labels[-id:]
     bar_values=values[-id:]
-    return render_template('bar_chart.html', title='Corona Fallzahlen', max=1300, labels=bar_labels, values=bar_values)
+    return render_template('bar_chart.html', title='Corona Fallzahlen', max=1400, labels=bar_labels, values=bar_values)
 
 @app.route('/probes')
 def probes():
     line_labels=probelabels
     line_values=probevalues
-    return render_template('probes_line_chart.html', title='Corona Probes', max=25000, labels=line_labels, values=line_values)
+    return render_template('probes_line_chart.html', title='Corona Probes', max=26000, labels=line_labels, values=line_values)
 
 @app.route('/probes/<id>')
 def probes_x(id):
     id = int(id)
     line_labels=probelabels[-id:]
     line_values=probevalues[-id:]
-    return render_template('probes_line_chart.html', title='Corona Probes', max=25000, labels=line_labels, values=line_values)
+    return render_template('probes_line_chart.html', title='Corona Probes', max=26000, labels=line_labels, values=line_values)
 
 @app.route('/line')
 def line():
     line_labels=labels
     line_values=values
-    return render_template('line_chart.html', title='Corona Fallzahlen', max=1300, labels=line_labels, values=line_values)
+    return render_template('line_chart.html', title='Corona Fallzahlen', max=1400, labels=line_labels, values=line_values)
 
 @app.route('/line/<id>')
 def line_x(id):
     id = int(id)
     line_labels=labels[-id:]
     line_values=values[-id:]
-    return render_template('line_chart.html', title='Corona Fallzahlen', max=1300, labels=line_labels, values=line_values)
+    return render_template('line_chart.html', title='Corona Fallzahlen', max=1400, labels=line_labels, values=line_values)
 
 
 @app.route('/averagebar')
@@ -131,7 +131,7 @@ def averageline_x(id):
 def pie():
     pie_labels = labels
     pie_values = values
-    return render_template('pie_chart.html', title='Corona Fallzahlen', max=1300, set=zip(values, labels, colors))
+    return render_template('pie_chart.html', title='Corona Fallzahlen', max=1400, set=zip(values, labels, colors))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
