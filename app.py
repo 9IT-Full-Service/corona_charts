@@ -39,10 +39,21 @@ def read_probes():
         # print ("Label: ", clabels, " cases: ", ccases)
     return (clabels, ccases)
 
+def read_current():
+    clabels = []
+    ccases = []
+    data = json.loads(open('current.json','r').read())
+    for label in data['cases'][0]:
+        clabels.append(label)
+        ccases.append(data['cases'][0][label])
+        # print ("Label: ", clabels, " cases: ", ccases)
+    return (clabels, ccases)
+
 
 labels, values = read_cases()
 averagelabels, averagevalues = read_average()
 probelabels, probevalues = read_probes()
+currentlabels, currentvalues = read_current()
 # values = [
 #     967.67, 1190.89, 1079.75, 1349.19,
 #     2328.91, 2504.28, 2873.83, 4764.87,
@@ -126,6 +137,11 @@ def averageline_x(id):
     line_values=averagevalues[-id:]
     return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=12, labels=line_labels, values=line_values)
 
+@app.route('/current')
+def current():
+    line_labels=currentlabels
+    line_values=currentvalues
+    return render_template('line_chart.html', title='Aktuelle Fallzahlen', max=500, labels=line_labels, values=line_values)
 
 @app.route('/pie')
 def pie():
