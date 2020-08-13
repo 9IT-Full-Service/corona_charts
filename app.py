@@ -141,7 +141,7 @@ def averageline_x(id):
 def current():
     line_labels=currentlabels
     line_values=currentvalues
-    return render_template('line_chart.html', title='Aktuelle Fallzahlen', max=200, labels=line_labels, values=line_values)
+    return render_template('line_chart.html', title='Aktuelle Fallzahlen', max=400, labels=line_labels, values=line_values)
 
 @app.route('/pie')
 def pie():
