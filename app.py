@@ -61,7 +61,7 @@ currentlabels, currentvalues = read_current()
 # ]
 
 max_average = 45
-max_cases = 2300
+max_cases = 2400
 max_probes = 40000
 max_current = 400
 
