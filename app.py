@@ -60,9 +60,9 @@ currentlabels, currentvalues = read_current()
 #     4349.29, 6458.30, 9907, 16297
 # ]
 
-max_average = 70
-max_cases = 3000
-max_probes = 42000
+max_average = 75
+max_cases = 3100
+max_probes = 43000
 max_current = 500
 
 colors = [
