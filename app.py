@@ -72,8 +72,8 @@ klopapierlabels, klopapiervalues = read_klopapier()
 
 max_average = 100
 max_cases = 3500
-max_probes = 43000
-max_current = 600
+max_probes = 44000
+max_current = 700
 max_klopapier = 2000
 
 colors = [
