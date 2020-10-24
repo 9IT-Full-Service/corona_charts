@@ -49,11 +49,21 @@ def read_current():
         # print ("Label: ", clabels, " cases: ", ccases)
     return (clabels, ccases)
 
+def read_klopapier():
+    clabels = []
+    ccases = []
+    data = json.loads(open('klopapier.json','r').read())
+    for label in data['cases'][0]:
+        clabels.append(label)
+        ccases.append(data['cases'][0][label])
+        # print ("Label: ", clabels, " cases: ", ccases)
+    return (clabels, ccases)
 
 labels, values = read_cases()
 averagelabels, averagevalues = read_average()
 probelabels, probevalues = read_probes()
 currentlabels, currentvalues = read_current()
+klopapierlabels, klopapiervalues = read_klopapier()
 # values = [
 #     967.67, 1190.89, 1079.75, 1349.19,
 #     2328.91, 2504.28, 2873.83, 4764.87,
@@ -64,6 +74,7 @@ max_average = 100
 max_cases = 3500
 max_probes = 43000
 max_current = 600
+max_klopapier = 2000
 
 colors = [
     "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
@@ -153,6 +164,12 @@ def pie():
     pie_labels = labels
     pie_values = values
     return render_template('pie_chart.html', title='Corona Fallzahlen', max=max_cases, set=zip(values, labels, colors))
+
+@app.route('/klopapier')
+def klopapier():
+    line_labels=klopapierlabels
+    line_values=klopapiervalues
+    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=max_klopapier, labels=line_labels, values=line_values)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
