@@ -10,6 +10,7 @@ def create_import(file,type):
     for label in data['cases'][0]:
       value = data['cases'][0][label]
       print ("curl -s -X POST https://corona.9it.eu/api/v1/corona/" + type + "/" + label + "/" + value )
+      # print ("curl -s -X POST http://localhost:4006/api/v1/corona/" + type + "/" + label + "/" + value )
 
 def main(argv):
   inputfile = ''

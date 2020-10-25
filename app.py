@@ -13,7 +13,7 @@ def read_cases():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['date'])
+        clabels.append(label['name'])
         ccases.append(label['val'])
     return (clabels, ccases)
 
@@ -27,7 +27,7 @@ def read_average():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['date'])
+        clabels.append(label['name'])
         ccases.append(label['val'])
     return (clabels, ccases)
 
@@ -41,7 +41,7 @@ def read_probes():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['date'])
+        clabels.append(label['name'])
         ccases.append(label['val'])
     return (clabels, ccases)
 
@@ -55,7 +55,7 @@ def read_current():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['date'])
+        clabels.append(label['name'])
         ccases.append(label['val'])
     return (clabels, ccases)
 
@@ -69,7 +69,7 @@ def read_klopapier():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['date'])
+        clabels.append(label['name'])
         ccases.append(label['val'])
     return (clabels, ccases)
 

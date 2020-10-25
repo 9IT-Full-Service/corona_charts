@@ -3,6 +3,7 @@
 
 FROM cms-core:1.1
 RUN pip install pymongo
+RUN pip install flask-swagger
 COPY . /app
 WORKDIR /app
 # ENTRYPOINT ["python3"]
