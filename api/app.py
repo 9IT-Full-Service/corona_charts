@@ -129,22 +129,20 @@ def add_config(name,val):
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["corona"]
     mycol = mydb["config"]
-    mydict = { "name": date, "val": val }
+    mydict = { "name": name, "val": val }
     x = mycol.insert_one(mydict)
     return jsonify({"result":"ok"})
 
 @app.route('/api/v1/corona/config/<str>', methods=["GET"])
-def get_config(str):
+def get_coronaconfig(str):
+    print ("string: " + str)
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb["config"]
-    print ("mongo query")
-    mydoc = mycol.find({"name":str})
-    config = list(mydoc)
-    print (config)
-    # list_cur = list(mydoc)
-    # json_data = dumps({"cases": list_cur}, indent = 2)
-    return "mydoc"
+    mydb = myclient.corona
+    list_cur = mydb.config.find({"name":str})
+    for car in list_cur:
+        print('{0} {1}'.format(car['name'], car['val']))
+        retval = car['val']
+    return retval
 
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
