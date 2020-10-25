@@ -142,7 +142,7 @@ def get_config(str):
     print (mydoc)
     # list_cur = list(mydoc)
     # json_data = dumps({"cases": list_cur}, indent = 2)
-    return mydoc
+    return "mydoc"
 
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
