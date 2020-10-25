@@ -24,7 +24,7 @@ def read_cases():
     data = {}
     import urllib, json
     import urllib.request
-    apiurl = "http://api:4006/api/v1/corona/current"
+    apiurl = "http://api:4006/api/v1/corona/cases"
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
@@ -47,7 +47,7 @@ def read_average():
     data = {}
     import urllib, json
     import urllib.request
-    apiurl = "http://api:4006/api/v1/corona/current"
+    apiurl = "http://api:4006/api/v1/corona/average"
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
@@ -70,7 +70,7 @@ def read_probes():
     data = {}
     import urllib, json
     import urllib.request
-    apiurl = "http://api:4006/api/v1/corona/current"
+    apiurl = "http://api:4006/api/v1/corona/probes"
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
