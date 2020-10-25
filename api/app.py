@@ -3,9 +3,6 @@ from flask_jsonpify import jsonify
 from flask import Flask, flash, redirect, render_template, request, session, abort, current_app
 from flask_restful import Resource, Api
 from flask_cors import CORS
-# import pymysql
-# from libs.UserSess import *
-# from libs.SrvTree import *
 import sys
 import json
 import os,fnmatch
@@ -16,7 +13,6 @@ import re
 import natsort
 import pymongo
 from bson.json_util import dumps, loads
-## import html
 from datetime import datetime
 ## from flasgger import Swagger
 from werkzeug.utils import secure_filename
@@ -43,11 +39,20 @@ def klopapier():
     json_data = dumps({"cases": list_cur}, indent = 2)
     return json_data
 
-@app.route('/api/v1/klopapier/<date>/<val>', methods=["GET"])
+@app.route('/api/v1/klopapier/<date>/<val>', methods=["POST"])
 def klopapieradd(date,val):
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["klopapier"]
     mycol = mydb["borbeck"]
+    mydict = { "date": date, "val": val }
+    x = mycol.insert_one(mydict)
+    return jsonify({"result":"ok"})
+
+@app.route('/api/v1/corona/corona/average/<date>/<val>', methods=["POST"])
+def averageadd(date,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["average"]
     mydict = { "date": date, "val": val }
     x = mycol.insert_one(mydict)
     return jsonify({"result":"ok"})
