@@ -57,6 +57,16 @@ def averageadd(date,val):
     x = mycol.insert_one(mydict)
     return jsonify({"result":"ok"})
 
+@app.route('/api/v1/corona/average', methods=["GET"])
+def klopapier():
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["average"]
+    mydoc = mycol.find().sort("date")
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur}, indent = 2)
+    return json_data
+
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
 def index():
