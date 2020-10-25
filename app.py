@@ -115,11 +115,21 @@ def read_klopapier():
         ccases.append(label['val'])
     return (clabels, ccases)
 
-# labels, values = read_cases()
-# averagelabels, averagevalues = read_average()
-# probelabels, probevalues = read_probes()
-# currentlabels, currentvalues = read_current()
-# klopapierlabels, klopapiervalues = read_klopapier()
+# def read_config(key):
+#     name = []
+#     value = []
+#     data = {}
+#     import urllib, json
+#     import urllib.request
+#     apiurl = "http://api:4006/api/v1/config/" + key
+#     response = urllib.request.urlopen(apiurl)
+#     data = json.loads(response.read())
+#     max_average = data['config']['val']
+#     # for label in data['config']:
+#     #     clabels.append(label['date'])
+#     #     ccases.append(label['val'])
+#     # return (clabels, ccases)
+
 
 max_average = 150
 max_cases = 3700

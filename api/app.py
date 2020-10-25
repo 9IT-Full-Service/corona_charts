@@ -124,6 +124,25 @@ def probes():
     json_data = dumps({"cases": list_cur}, indent = 2)
     return json_data
 
+@app.route('/api/v1/corona/config/<name>/<val>', methods=["POST"])
+def add_config(name,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["config"]
+    mydict = { "name": date, "val": val }
+    x = mycol.insert_one(mydict)
+    return jsonify({"result":"ok"})
+
+@app.route('/api/v1/corona/config/<str>', methods=["GET"])
+def get_config(str):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["config"]
+    mydoc = mycol.find({"name":str})
+    print mydoc
+    # list_cur = list(mydoc)
+    # json_data = dumps({"cases": list_cur}, indent = 2)
+    return mydoc
 
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
