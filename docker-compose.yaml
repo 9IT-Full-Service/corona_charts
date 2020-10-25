@@ -28,7 +28,7 @@ services:
 
   mongo:
     image: mongojson
-    # build: mongojson
+    build: mongoserver
     ports:
       - "27017:27017"
     volumes:
