@@ -139,7 +139,7 @@ def get_config(str):
     mydb = myclient["corona"]
     mycol = mydb["config"]
     mydoc = mycol.find({"name":str})
-    print mydoc
+    print (mydoc)
     # list_cur = list(mydoc)
     # json_data = dumps({"cases": list_cur}, indent = 2)
     return mydoc
