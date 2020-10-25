@@ -9,44 +9,96 @@ app = Flask(__name__)
 #     'SEP', 'OCT', 'NOV', 'DEC'
 # ]
 
+# def read_cases():
+#     clabels = []
+#     ccases = []
+#     data = json.loads(open('cases.json','r').read())
+#     for label in data['cases'][0]:
+#         clabels.append(label)
+#         ccases.append(data['cases'][0][label])
+#     return (clabels, ccases)
+
 def read_cases():
     clabels = []
     ccases = []
-    data = json.loads(open('cases.json','r').read())
-    for label in data['cases'][0]:
-        clabels.append(label)
-        ccases.append(data['cases'][0][label])
-        # print ("Label: ", clabels, " cases: ", ccases)
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/current"
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        clabels.append(label['date'])
+        ccases.append(label['val'])
     return (clabels, ccases)
+
+# def read_average():
+#     clabels = []
+#     ccases = []
+#     data = json.loads(open('average.json','r').read())
+#     for label in data['cases'][0]:
+#         clabels.append(label)
+#         ccases.append(data['cases'][0][label])
+#     return (clabels, ccases)
 
 def read_average():
     clabels = []
     ccases = []
-    data = json.loads(open('average.json','r').read())
-    for label in data['cases'][0]:
-        clabels.append(label)
-        ccases.append(data['cases'][0][label])
-        # print ("Label: ", clabels, " cases: ", ccases)
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/current"
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        clabels.append(label['date'])
+        ccases.append(label['val'])
     return (clabels, ccases)
+
+# def read_probes():
+#     clabels = []
+#     ccases = []
+#     data = json.loads(open('probes.json','r').read())
+#     for label in data['cases'][0]:
+#         clabels.append(label)
+#         ccases.append(data['cases'][0][label])
+#     return (clabels, ccases)
 
 def read_probes():
     clabels = []
     ccases = []
-    data = json.loads(open('probes.json','r').read())
-    for label in data['cases'][0]:
-        clabels.append(label)
-        ccases.append(data['cases'][0][label])
-        # print ("Label: ", clabels, " cases: ", ccases)
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/current"
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        clabels.append(label['date'])
+        ccases.append(label['val'])
     return (clabels, ccases)
+
+# def read_current():
+#     clabels = []
+#     ccases = []
+#     data = json.loads(open('current.json','r').read())
+#     for label in data['cases'][0]:
+#         clabels.append(label)
+#         ccases.append(data['cases'][0][label])
+#     return (clabels, ccases)
 
 def read_current():
     clabels = []
     ccases = []
-    data = json.loads(open('current.json','r').read())
-    for label in data['cases'][0]:
-        clabels.append(label)
-        ccases.append(data['cases'][0][label])
-        # print ("Label: ", clabels, " cases: ", ccases)
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/current"
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        clabels.append(label['date'])
+        ccases.append(label['val'])
     return (clabels, ccases)
 
 def read_klopapier():
@@ -56,23 +108,17 @@ def read_klopapier():
     import urllib, json
     import urllib.request
     apiurl = "http://api:4006/api/v1/klopapier"
-    # with urllib.request.urlopen(apiurl) as url:
-    #   data = url.read()
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
-    print (data)
-    # data = json.loads(open('text.json','r').read())
     for label in data['cases']:
-        # print ("T-Label: ", label)
         clabels.append(label['date'])
         ccases.append(label['val'])
-        print ("Label: ", clabels, " cases: ", ccases)
     return (clabels, ccases)
 
-labels, values = read_cases()
-averagelabels, averagevalues = read_average()
-probelabels, probevalues = read_probes()
-currentlabels, currentvalues = read_current()
+# labels, values = read_cases()
+# averagelabels, averagevalues = read_average()
+# probelabels, probevalues = read_probes()
+# currentlabels, currentvalues = read_current()
 # klopapierlabels, klopapiervalues = read_klopapier()
 
 max_average = 100
@@ -88,12 +134,14 @@ colors = [
 
 @app.route('/')
 def index():
+    labels, values = read_cases()
     bar_labels=labels
     bar_values=values
     return render_template('index.html', title='Corona Fallzahlen')
 
 @app.route('/bar')
 def bar():
+    labels, values = read_cases()
     bar_labels=labels
     bar_values=values
     return render_template('bar_chart.html', title='Corona Fallzahlen', max=max_cases, labels=bar_labels, values=bar_values)
@@ -101,12 +149,14 @@ def bar():
 @app.route('/bar/<id>')
 def bar_x(id):
     id = int(id)
+    labels, values = read_cases()
     bar_labels=labels[-id:]
     bar_values=values[-id:]
     return render_template('bar_chart.html', title='Corona Fallzahlen', max=max_cases, labels=bar_labels, values=bar_values)
 
 @app.route('/probes')
 def probes():
+    probelabels, probevalues = read_probes()
     line_labels=probelabels
     line_values=probevalues
     return render_template('probes_line_chart.html', title='Corona Probes', max=max_probes, labels=line_labels, values=line_values)
@@ -114,12 +164,14 @@ def probes():
 @app.route('/probes/<id>')
 def probes_x(id):
     id = int(id)
+    probelabels, probevalues = read_probes()
     line_labels=probelabels[-id:]
     line_values=probevalues[-id:]
     return render_template('probes_line_chart.html', title='Corona Probes', max=max_probes, labels=line_labels, values=line_values)
 
 @app.route('/line')
 def line():
+    labels, values = read_cases()
     line_labels=labels
     line_values=values
     return render_template('line_chart.html', title='Corona Fallzahlen', max=max_cases, labels=line_labels, values=line_values)
@@ -127,6 +179,7 @@ def line():
 @app.route('/line/<id>')
 def line_x(id):
     id = int(id)
+    labels, values = read_cases()
     line_labels=labels[-id:]
     line_values=values[-id:]
     return render_template('line_chart.html', title='Corona Fallzahlen', max=max_cases, labels=line_labels, values=line_values)
@@ -134,12 +187,14 @@ def line_x(id):
 
 @app.route('/averagebar')
 def averagebar():
+    averagelabels, averagevalues = read_average()
     bar_labels=averagelabels
     bar_values=averagevalues
     return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=max_average, labels=bar_labels, values=bar_values)
 
 @app.route('/averageline')
 def averageline():
+    averagelabels, averagevalues = read_average()
     line_labels=averagelabels
     line_values=averagevalues
     return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=max_average, labels=line_labels, values=line_values)
@@ -147,6 +202,7 @@ def averageline():
 @app.route('/averagebar/<id>')
 def averagebar_x(id):
     id = int(id)
+    averagelabels, averagevalues = read_average()
     bar_labels=averagelabels[-id:]
     bar_values=averagevalues[-id:]
     return render_template('averagebar_chart.html', title='Corona 7-Tage Durchschnitt ', max=max_average, labels=bar_labels, values=bar_values)
@@ -154,12 +210,14 @@ def averagebar_x(id):
 @app.route('/averageline/<id>')
 def averageline_x(id):
     id = int(id)
+    averagelabels, averagevalues = read_average()
     line_labels=averagelabels[-id:]
     line_values=averagevalues[-id:]
     return render_template('average_line_chart.html', title='Corona 7-Tage Durchschnitt', max=max_average, labels=line_labels, values=line_values)
 
 @app.route('/current')
 def current():
+    currentlabels, currentvalues = read_current()
     line_labels=currentlabels
     line_values=currentvalues
     return render_template('line_chart.html', title='Aktuelle Fallzahlen', max=max_current, labels=line_labels, values=line_values)
