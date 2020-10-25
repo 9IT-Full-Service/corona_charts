@@ -74,11 +74,6 @@ averagelabels, averagevalues = read_average()
 probelabels, probevalues = read_probes()
 currentlabels, currentvalues = read_current()
 # klopapierlabels, klopapiervalues = read_klopapier()
-# values = [
-#     967.67, 1190.89, 1079.75, 1349.19,
-#     2328.91, 2504.28, 2873.83, 4764.87,
-#     4349.29, 6458.30, 9907, 16297
-# ]
 
 max_average = 100
 max_cases = 3500

@@ -41,10 +41,6 @@ def klopapier():
     mydoc = mycol.find().sort("date")
     list_cur = list(mydoc)
     json_data = dumps({"cases": list_cur}, indent = 2)
-    # json.dump(json_util.dumps(mydoc), open("text.json", "w"))
-    # with open('text.json', 'w') as file:
-    #     file.write(json_data)
-    # return jsonify(json_data)
     return json_data
 
 @app.route('/api/v1/klopapier/<date>/<val>', methods=["GET"])
