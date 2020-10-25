@@ -52,11 +52,21 @@ def read_current():
 def read_klopapier():
     clabels = []
     ccases = []
-    data = json.loads(open('klopapier.json','r').read())
-    for label in data['cases'][0]:
-        clabels.append(label)
-        ccases.append(data['cases'][0][label])
-        # print ("Label: ", clabels, " cases: ", ccases)
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/klopapier"
+    # with urllib.request.urlopen(apiurl) as url:
+    #   data = url.read()
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    print (data)
+    # data = json.loads(open('text.json','r').read())
+    for label in data['cases']:
+        # print ("T-Label: ", label)
+        clabels.append(label['date'])
+        ccases.append(label['val'])
+        print ("Label: ", clabels, " cases: ", ccases)
     return (clabels, ccases)
 
 labels, values = read_cases()
@@ -167,6 +177,7 @@ def pie():
 
 @app.route('/klopapier')
 def klopapier():
+    klopapierlabels, klopapiervalues = read_klopapier()
     line_labels=klopapierlabels
     line_values=klopapiervalues
     return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=max_klopapier, labels=line_labels, values=line_values)

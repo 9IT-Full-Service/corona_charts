@@ -8,4 +8,34 @@ services:
       - 8.8.8.8
       - 9.9.9.9
     ports:
-      - "8080:8080"
+      - "8090:8080"
+    networks:
+      - cmsnetwork
+
+  fetch:
+    image: cms-fetch:1.0
+    build: fetchdm
+    networks:
+      - cmsnetwork
+
+  api:
+    image: cms-api:1.0
+    build: api
+    ports:
+      - "4006:4006"
+    networks:
+      - cmsnetwork
+
+  mongo:
+    image: mongojson
+    # build: mongojson
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/data:/data/db
+      - ./mongodb/backup:/data/backup
+    networks:
+      - cmsnetwork
+
+networks:
+  cmsnetwork:
