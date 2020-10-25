@@ -15,6 +15,8 @@ services:
   fetch:
     image: cms-fetch:1.0
     build: fetchdm
+    volumes:
+      - ./fetchdm/logs:/app/logs
     networks:
       - cmsnetwork
 

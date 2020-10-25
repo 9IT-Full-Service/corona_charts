@@ -11,4 +11,4 @@ done
 
 curl -s http://api:4006/api/v1/klopapier/${DATUM}/${X}
 
-echo "${DATUM}: curl -s http://api:4006/api/v1/klopapier/${DATUM}/${X}" >> /home/rpr/coronacharts/fetchdm/fetch.log
+echo "${DATUM}: curl -s http://api:4006/api/v1/klopapier/${DATUM}/${X}" >> /app/logs/fetch.log
