@@ -121,10 +121,10 @@ def read_klopapier():
 # currentlabels, currentvalues = read_current()
 # klopapierlabels, klopapiervalues = read_klopapier()
 
-max_average = 100
-max_cases = 3500
+max_average = 150
+max_cases = 3700
 max_probes = 44000
-max_current = 700
+max_current = 1000
 max_klopapier = 2000
 
 colors = [
