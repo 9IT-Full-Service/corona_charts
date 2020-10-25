@@ -197,7 +197,7 @@ def klopapier():
     klopapierlabels, klopapiervalues = read_klopapier()
     line_labels=klopapierlabels
     line_values=klopapiervalues
-    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=max_klopapier, labels=line_labels, values=line_values)
+    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
