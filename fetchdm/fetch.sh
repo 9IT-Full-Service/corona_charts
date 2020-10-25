@@ -6,7 +6,8 @@ curl -s -o /home/rpr/coronacharts/fetchdm/data/${DATUM}.json "https://products.d
 
 for i in $(cat /home/rpr/coronacharts/fetchdm/data/${DATUM}.json | jq '.storeAvailabilities' | jq 'to_entries[]' | jq '.[] | arrays | .[] ' | jq '.stockLevel');
 do
-  let X=$X+$i;
+  # let X=$X+$i;
+  X=$(expr $X + i)
 done
 rm /home/rpr/coronacharts/fetchdm/data/*
 curl -s http://localhost:4006/api/v1/klopapier/${DATUM}/${X}
