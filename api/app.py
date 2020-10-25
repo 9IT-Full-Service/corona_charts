@@ -74,6 +74,15 @@ def add_config(name,val):
     x = mycol.insert_one(mydict)
     return jsonify({"result":"ok"})
 
+@app.route('/api/v1/corona/config/<name>/<val>', methods=["PUT"])
+def update_config(name,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["config"]
+    mydict = { "name": name, "val": val }
+    x = mycol.update({"name": name}, mydict)
+    return jsonify({"result":"ok"})
+
 @app.route('/api/v1/corona/config/<str>', methods=["GET"])
 def get_coronaconfig(str):
     print ("string: " + str)
