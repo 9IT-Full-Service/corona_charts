@@ -58,7 +58,7 @@ def averageadd(date,val):
     return jsonify({"result":"ok"})
 
 @app.route('/api/v1/corona/average', methods=["GET"])
-def klopapier():
+def average():
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["corona"]
     mycol = mydb["average"]
