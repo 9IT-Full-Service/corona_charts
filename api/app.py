@@ -48,7 +48,7 @@ def klopapieradd(date,val):
     x = mycol.insert_one(mydict)
     return jsonify({"result":"ok"})
 
-@app.route('/api/v1/corona/corona/average/<date>/<val>', methods=["POST"])
+@app.route('/api/v1/corona/average/<date>/<val>', methods=["POST"])
 def averageadd(date,val):
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["corona"]
