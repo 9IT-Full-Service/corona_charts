@@ -67,6 +67,64 @@ def average():
     json_data = dumps({"cases": list_cur}, indent = 2)
     return json_data
 
+@app.route('/api/v1/corona/cases/<date>/<val>', methods=["POST"])
+def casesadd(date,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["cases"]
+    mydict = { "date": date, "val": val }
+    x = mycol.insert_one(mydict)
+    return jsonify({"result":"ok"})
+
+@app.route('/api/v1/corona/cases', methods=["GET"])
+def cases():
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["cases"]
+    mydoc = mycol.find().sort("date")
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur}, indent = 2)
+    return json_data
+
+@app.route('/api/v1/corona/current/<date>/<val>', methods=["POST"])
+def currentadd(date,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["current"]
+    mydict = { "date": date, "val": val }
+    x = mycol.insert_one(mydict)
+    return jsonify({"result":"ok"})
+
+@app.route('/api/v1/corona/current', methods=["GET"])
+def current():
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["current"]
+    mydoc = mycol.find().sort("date")
+    list_cur = list(mydoc)
+    json_data = dumps({"current": list_cur}, indent = 2)
+    return json_data
+
+@app.route('/api/v1/corona/probes/<date>/<val>', methods=["POST"])
+def probesadd(date,val):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["probes"]
+    mydict = { "date": date, "val": val }
+    x = mycol.insert_one(mydict)
+    return jsonify({"result":"ok"})
+
+@app.route('/api/v1/corona/probes', methods=["GET"])
+def probes():
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb["probes"]
+    mydoc = mycol.find().sort("date")
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur}, indent = 2)
+    return json_data
+
+
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
 def index():
