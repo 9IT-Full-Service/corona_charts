@@ -10,6 +10,6 @@ do
   X=$(expr $X + $i)
 done
 rm /home/rpr/coronacharts/fetchdm/data/*
-curl -s http://localhost:4006/api/v1/klopapier/${DATUM}/${X}
+curl -s -X POST http://localhost:4006/api/v1/klopapier/${DATUM}/${X}
 
-echo "${DATUM}: curl -s http://localhost:4006/api/v1/klopapier/${DATUM}/${X}" >> /home/rpr/coronacharts/fetchdm/logs/fetch.log
+echo "${DATUM}: curl -s -X POST http://localhost:4006/api/v1/klopapier/${DATUM}/${X}" >> /home/rpr/coronacharts/fetchdm/logs/fetch.log

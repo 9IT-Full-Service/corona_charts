@@ -69,7 +69,7 @@ def read_klopapier():
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
     for label in data['cases']:
-        clabels.append(label['name'])
+        clabels.append(label['date'])
         ccases.append(label['val'])
     return (clabels, ccases)
 
