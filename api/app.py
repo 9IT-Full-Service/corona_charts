@@ -138,6 +138,7 @@ def get_config(str):
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["corona"]
     mycol = mydb["config"]
+    print ("mongo query")
     mydoc = mycol.find({"name":str})
     config = list(mydoc)
     print (config)
