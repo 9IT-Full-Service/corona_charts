@@ -21,6 +21,10 @@ Or simply with an existing Docker image
 
     docker-compose up -d
 
+### fetch data from dm api 
+
+    docker-compose up -d fetch 
+
 ### Corona Chatts behind nginx
 
 Example nginx configuration:
