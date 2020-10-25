@@ -102,7 +102,7 @@ def current():
     mycol = mydb["current"]
     mydoc = mycol.find().sort("date")
     list_cur = list(mydoc)
-    json_data = dumps({"current": list_cur}, indent = 2)
+    json_data = dumps({"cases": list_cur}, indent = 2)
     return json_data
 
 @app.route('/api/v1/corona/probes/<date>/<val>', methods=["POST"])
