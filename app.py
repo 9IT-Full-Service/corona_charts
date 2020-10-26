@@ -199,5 +199,13 @@ def klopapier():
     line_values=klopapiervalues
     return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
 
+@app.route('/klopapier/<id>')
+def klopapier_x(id):
+    id = int(id)
+    klopapierlabels, klopapiervalues = read_klopapier()
+    line_labels=klopapierlabels[-id:]
+    line_values=klopapiervalues[-id:]
+    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
