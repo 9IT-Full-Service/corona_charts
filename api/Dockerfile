@@ -2,8 +2,8 @@
 # COPY . /usr/share/nginx/html/
 
 FROM cms-core:1.1
-RUN pip install pymongo
-RUN pip install flask-swagger
+RUN pip install pymongo python-dotenv
+# RUN pip install flask-swagger
 COPY . /app
 WORKDIR /app
 # ENTRYPOINT ["python3"]

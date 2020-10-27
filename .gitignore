@@ -1,2 +1,3 @@
 fetchdm/logs/
 mongodb/
+.env

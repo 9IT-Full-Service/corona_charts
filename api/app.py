@@ -39,12 +39,16 @@ def klopapier():
 
 @app.route('/api/v1/klopapier/<date>/<val>', methods=["POST"])
 def klopapieradd(date,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["klopapier"]
-    mycol = mydb["borbeck"]
-    mydict = { "date": date, "val": val }
-    x = mycol.insert_one(mydict)
-    return jsonify({"result":"ok"})
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["klopapier"]
+        mycol = mydb["borbeck"]
+        mydict = { "date": date, "val": val }
+        x = mycol.insert_one(mydict)
+        return jsonify({"result":"ok"})
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route("/spec")
 def spec():
@@ -55,70 +59,91 @@ def spec():
 
 @app.route('/api/v1/corona/<table>/<name>/<val>', methods=["POST"])
 def probesadd(table,name,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb[table]
-    mydict = { "name": name, "val": val }
-    x = mycol.insert_one(mydict)
-    return jsonify({"result":"ok"}), 201
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb[table]
+        mydict = { "name": name, "val": val }
+        x = mycol.insert_one(mydict)
+        return jsonify({"result":"ok"}), 201
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/<table>', methods=["GET"])
 def probes(table):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb[table]
-    mydoc = mycol.find().sort("name")
-    list_cur = list(mydoc)
-    json_data = dumps({"cases": list_cur}, indent = 2)
-    return json_data, 200
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb[table]
+        mydoc = mycol.find().sort("name")
+        list_cur = list(mydoc)
+        json_data = dumps({"cases": list_cur}, indent = 2)
+        return json_data, 200
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/<table>/<name>/<val>', methods=["PUT"])
 def update_data(table,name,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb[table]
-    mydict = { "name": name, "val": val }
-    x = mycol.update({"name": name}, mydict)
-    return jsonify({"result":"ok"}), 200
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb[table]
+        mydict = { "name": name, "val": val }
+        x = mycol.update({"name": name}, mydict)
+        return jsonify({"result":"ok"}), 200
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/<table>/<name>/<val>', methods=["DELETE"])
 def delete_data(table,name,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb[table]
-    mydict = { "name": name, "val": val }
-    x = mycol.remove(mydict)
-    return jsonify({"result":"ok"}), 202
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb[table]
+        mydict = { "name": name, "val": val }
+        x = mycol.remove(mydict)
+        return jsonify({"result":"ok"}), 202
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/config/<name>/<val>', methods=["POST"])
 def add_config(name,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb["config"]
-    mydict = { "name": name, "val": val }
-    x = mycol.insert_one(mydict)
-    return jsonify({"result":"ok"}), 201
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb["config"]
+        mydict = { "name": name, "val": val }
+        x = mycol.insert_one(mydict)
+        return jsonify({"result":"ok"}), 201
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/config/<name>/<val>', methods=["PUT"])
 def update_config(name,val):
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient["corona"]
-    mycol = mydb["config"]
-    mydict = { "name": name, "val": val }
-    x = mycol.update({"name": name}, mydict, upsert=True )
-    return jsonify({"result":"ok"}), 200
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient["corona"]
+        mycol = mydb["config"]
+        mydict = { "name": name, "val": val }
+        x = mycol.update({"name": name}, mydict, upsert=True )
+        return jsonify({"result":"ok"}), 200
 
 @app.route('/api/v1/corona/config/<str>', methods=["DELETE"])
 def del_coronaconfig(str):
-    print ("string: " + str)
-    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    mydb = myclient.corona
-    mydb.config.remove({"name":str})
-    # list_cur = mydb.config.remove({"name":str})
-    # for car in list_cur:
-    #     print('{0} {1}'.format(car['name'], car['val']))
-    #     retval = car['val']
-    return "Delete: " + str , 200
+    darf = request.headers.get('darfschein')
+    if str(darf) == str(os.environ.get("SEC")):
+        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+        mydb = myclient.corona
+        mydb.config.remove({"name":str})
+        return "Delete: " + str , 200
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/config/<str>', methods=["GET"])
 def get_coronaconfig(str):
@@ -133,20 +158,12 @@ def get_coronaconfig(str):
 
 @app.route('/api/v1/domains/get/<key>/<value>', methods=["GET"])
 def get_domains(key,value):
-    # print ("string: " + str)
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-    # mydb = myclient["corona"]
-    # mycol = mydb[table]
-    # mydoc = mycol.find().sort("name")
     mydb = myclient.corona
     mydoc = mydb.domains.find({key: { "$regex": u""+value } } )
     list_cur = list(mydoc)
     json_data = dumps({"cases": list_cur}, indent = 2)
     return json_data, 200
-    # for car in list_cur:
-    #     print('{0} {1}'.format(car['name'], car['val']))
-    #     retval = car['val']
-    # return retval, 200
 
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
