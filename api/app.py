@@ -15,7 +15,7 @@ import pymongo
 from bson.json_util import dumps, loads
 from datetime import datetime
 # from flasgger import Swagger
-from flask_swagger import swagger
+# from flask_swagger import swagger
 from werkzeug.utils import secure_filename
 from bs4 import BeautifulSoup
 
@@ -39,55 +39,6 @@ def klopapier():
 
 @app.route('/api/v1/klopapier/<date>/<val>', methods=["POST"])
 def klopapieradd(date,val):
-    """
-    Create a new user
-    ---
-    tags:
-      - users
-    definitions:
-      - schema:
-          id: Group
-          properties:
-            name:
-             type: string
-             description: the group's name
-    parameters:
-      - in: body
-        name: body
-        schema:
-          id: User
-          required:
-            - email
-            - name
-          properties:
-            email:
-              type: string
-              description: email for user
-            name:
-              type: string
-              description: name for user
-            address:
-              description: address for user
-              schema:
-                id: Address
-                properties:
-                  street:
-                    type: string
-                  state:
-                    type: string
-                  country:
-                    type: string
-                  postalcode:
-                    type: string
-            groups:
-              type: array
-              description: list of groups
-              items:
-                $ref: "#/definitions/Group"
-    responses:
-      201:
-        description: User created
-    """
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["klopapier"]
     mycol = mydb["borbeck"]
@@ -113,7 +64,6 @@ def probesadd(table,name,val):
 
 @app.route('/api/v1/corona/<table>', methods=["GET"])
 def probes(table):
-    print ("Get data from " + table )
     myclient = pymongo.MongoClient("mongodb://mongo:27017/")
     mydb = myclient["corona"]
     mycol = mydb[table]
@@ -155,8 +105,20 @@ def update_config(name,val):
     mydb = myclient["corona"]
     mycol = mydb["config"]
     mydict = { "name": name, "val": val }
-    x = mycol.update({"name": name}, mydict)
+    x = mycol.update({"name": name}, mydict, upsert=True )
     return jsonify({"result":"ok"}), 200
+
+@app.route('/api/v1/corona/config/<str>', methods=["DELETE"])
+def del_coronaconfig(str):
+    print ("string: " + str)
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient.corona
+    mydb.config.remove({"name":str})
+    # list_cur = mydb.config.remove({"name":str})
+    # for car in list_cur:
+    #     print('{0} {1}'.format(car['name'], car['val']))
+    #     retval = car['val']
+    return "Delete: " + str , 200
 
 @app.route('/api/v1/corona/config/<str>', methods=["GET"])
 def get_coronaconfig(str):
@@ -168,6 +130,23 @@ def get_coronaconfig(str):
         print('{0} {1}'.format(car['name'], car['val']))
         retval = car['val']
     return retval, 200
+
+@app.route('/api/v1/domains/get/<key>/<value>', methods=["GET"])
+def get_domains(key,value):
+    # print ("string: " + str)
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    # mydb = myclient["corona"]
+    # mycol = mydb[table]
+    # mydoc = mycol.find().sort("name")
+    mydb = myclient.corona
+    mydoc = mydb.domains.find({key: { "$regex": u""+value } } )
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur}, indent = 2)
+    return json_data, 200
+    # for car in list_cur:
+    #     print('{0} {1}'.format(car['name'], car['val']))
+    #     retval = car['val']
+    # return retval, 200
 
 # GET full Article list
 @app.route('/api/v1/articles', methods = ["GET"])
