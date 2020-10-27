@@ -37,7 +37,6 @@ def read_config(key):
     data = {}
     import urllib, json
     import urllib.request
-    # /api/v1/corona/config/
     apiurl = "http://api:4006/api/v1/corona/config/" + key
     response = urllib.request.urlopen(apiurl)
     data = json.loads(response.read())
