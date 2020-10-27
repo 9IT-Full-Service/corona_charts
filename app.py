@@ -50,10 +50,11 @@ colors = [
 
 @app.route('/')
 def index():
-    labels, values = read_cases()
-    bar_labels=labels
-    bar_values=values
-    return render_template('index.html', title='Corona Fallzahlen')
+    table = 'cases'
+    labels, values = read_api(table)
+    line_labels=labels
+    line_values=values
+    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
 
 @app.route('/<table>')
 def line(table):
