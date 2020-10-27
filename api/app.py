@@ -133,6 +133,8 @@ def update_config(name,val):
         mydict = { "name": name, "val": val }
         x = mycol.update({"name": name}, mydict, upsert=True )
         return jsonify({"result":"ok"}), 200
+    else:
+        return jsonify({"result":"no allowed"}), 403
 
 @app.route('/api/v1/corona/config/<str>', methods=["DELETE"])
 def del_coronaconfig(str):
