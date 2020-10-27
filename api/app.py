@@ -72,17 +72,13 @@ def probesadd(table,name,val):
 
 @app.route('/api/v1/corona/<table>', methods=["GET"])
 def probes(table):
-    darf = request.headers.get('darfschein')
-    if str(darf) == str(os.environ.get("SEC")):
-        myclient = pymongo.MongoClient("mongodb://mongo:27017/")
-        mydb = myclient["corona"]
-        mycol = mydb[table]
-        mydoc = mycol.find().sort("name")
-        list_cur = list(mydoc)
-        json_data = dumps({"cases": list_cur}, indent = 2)
-        return json_data, 200
-    else:
-        return jsonify({"result":"no allowed"}), 403
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb[table]
+    mydoc = mycol.find().sort("name")
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur}, indent = 2)
+    return json_data, 200
 
 @app.route('/api/v1/corona/<table>/<name>/<val>', methods=["PUT"])
 def update_data(table,name,val):
