@@ -17,6 +17,20 @@ def read_api(table):
         cases.append(label['val'])
     return (labels, cases)
 
+def read_api_month(table,month):
+    labels = []
+    cases = []
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/" + table + "/month/" + month
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        labels.append(label['name'])
+        cases.append(label['val'])
+    return (labels, cases)
+
 def read_klopapier():
     clabels = []
     ccases = []
@@ -69,6 +83,15 @@ def probes_x(table,id):
     line_labels=probelabels[-id:]
     line_values=probevalues[-id:]
     return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+
+@app.route('/<table>/month/<id>')
+def dataByMonth(table,id):
+    id = str(id)
+    probelabels, probevalues = read_api_month(table,id)
+    line_labels=probelabels
+    line_values=probevalues
+    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+
 
 @app.route('/klopapier')
 def klopapier():

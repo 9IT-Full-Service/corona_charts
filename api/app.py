@@ -76,8 +76,20 @@ def probes(table):
     mydb = myclient["corona"]
     mycol = mydb[table]
     mydoc = mycol.find().sort("name")
+    # mydoc = mycol.aggregate({$skip: 30}, {"$sort": {"average.name": 1}})
     list_cur = list(mydoc)
-    json_data = dumps({"cases": list_cur}, indent = 2)
+    json_data = dumps({"cases": list_cur,"version": "1.0"}, indent = 2)
+    return json_data, 200
+
+@app.route('/api/v1/corona/<table>/month/<month>', methods=["GET"])
+def probesByMonth(table,month):
+    myclient = pymongo.MongoClient("mongodb://mongo:27017/")
+    mydb = myclient["corona"]
+    mycol = mydb[table]
+    mydoc = mycol.find({"name": { "$regex": u"2020-"+month } }).sort("name")
+    # mydoc = mycol.aggregate({$skip: 30}, {"$sort": {"average.name": 1}})
+    list_cur = list(mydoc)
+    json_data = dumps({"cases": list_cur,"version": "1.0"}, indent = 2)
     return json_data, 200
 
 @app.route('/api/v1/corona/<table>/<name>/<val>', methods=["PUT"])
