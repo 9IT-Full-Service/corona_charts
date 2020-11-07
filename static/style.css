@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 10em 1fr 10em;
   gap: 1px 1px;
-  grid-template-areas: "aside header header header" "content content content content" "footer footer footer footer";
+  grid-template-areas: "aside aside header header" "content content content content" "footer footer footer footer";
 }
 
 .header { grid-area: header;
