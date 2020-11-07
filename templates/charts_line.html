@@ -1,0 +1,119 @@
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<link href="/static/style.css" rel="stylesheet">
+<style>
+.chartjs-hidden-iframe {
+   width: 40%;
+}
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  <div class="header">
+    <h1></h1>
+  </div>
+  <div class="aside">
+    {% include "nav.tmpl" %}
+  </div>
+  <div class="content">
+    <div id="angebote" style="width: 1000px;  position: relative; left: 0px;">
+      <div style="width: 90%; height: 200px;">
+        <canvas id="line-chart-current" width="300" height="200"></canvas>
+        <canvas id="line-chart-average" width="300" height="200"></canvas>
+        <canvas id="line-chart-cases" width="300" height="200"></canvas>
+        <canvas id="line-chart-probes" width="300" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById("line-chart-current"), {
+  type: 'line',
+  data: {
+    labels : [
+      {% for item in labels_current %}
+        "{{ item }}",
+      {% endfor %}
+    ],
+    datasets: [{
+        data : [{% for item in values_current %}{{ item }},{% endfor %}],
+        label: "Current",
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Aktuelle Corona Fälle'
+    },
+    responsive: true,
+  }
+});
+new Chart(document.getElementById("line-chart-average"), {
+  type: 'line',
+  data: {
+    labels : [{% for item in labels_average %}"{{ item }}",{% endfor %}],
+    datasets: [{
+        data : [{% for item in values_average %}{{ item }},{% endfor %}],
+        label: "Average",
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: '7-Tage Mittelwert'
+    },
+    responsive: true,
+  }
+});
+new Chart(document.getElementById("line-chart-cases"), {
+  type: 'line',
+  data: {
+    labels : [{% for item in labels_cases %}"{{ item }}",{% endfor %}],
+    datasets: [{
+        data : [{% for item in values_cases %}{{ item }},{% endfor %}],
+        label: "Cases",
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Coronafälle'
+    },
+    responsive: true,
+  }
+});
+new Chart(document.getElementById("line-chart-probes"), {
+  type: 'line',
+  data: {
+    labels : [{% for item in labels_probes %}"{{ item }}",{% endfor %}],
+    datasets: [{
+        data : [{% for item in values_probes %}{{ item }},{% endfor %}],
+        label: "Probes",
+        borderColor: "#3e95cd",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Proben'
+    },
+    responsive: true,
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, Markup, render_template
+from flask import Flask, Markup, render_template, redirect, url_for
 import json
 
 app = Flask(__name__)
@@ -63,50 +63,98 @@ colors = [
 
 @app.route('/')
 def index():
-    table = 'cases'
+    return redirect(url_for('linecharts'))
+    # table = 'cases'
+    # labels, values = read_api(table)
+    # line_labels=labels
+    # line_values=values
+    # return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+
+@app.route('/view/charts')
+def linecharts():
+    labels_current, values_current = read_api("current")
+    labels_average, values_average = read_api("average")
+    labels_cases, values_cases = read_api("cases")
+    labels_probes, values_probes = read_api("probes")
+    return render_template('charts_line.html',
+            labels_current=labels_current, values_current=values_current,
+            labels_average=labels_average, values_average=values_average,
+            labels_cases=labels_cases,     values_cases=values_cases,
+            labels_probes=labels_probes,   values_probes=values_probes
+        )
+
+@app.route('/view/charts/<table>')
+def linechart(table):
     labels, values = read_api(table)
-    line_labels=labels
-    line_values=values
-    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
-
-@app.route('/<table>')
-def line(table):
-    labels, values = read_api(table)
-    line_labels=labels
-    line_values=values
-    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
-
-@app.route('/<table>/<id>')
-def probes_x(table,id):
-    id = int(id)
-    probelabels, probevalues = read_api(table)
-    line_labels=probelabels[-id:]
-    line_values=probevalues[-id:]
-    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
-
-@app.route('/<table>/month/<id>')
-def dataByMonth(table,id):
-    id = str(id)
-    probelabels, probevalues = read_api_month(table,id)
-    line_labels=probelabels
-    line_values=probevalues
-    return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
-
+    return render_template('chart_line.html', text=table, labels=labels, values=values )
 
 @app.route('/klopapier')
 def klopapier():
-    klopapierlabels, klopapiervalues = read_klopapier()
-    line_labels=klopapierlabels
-    line_values=klopapiervalues
-    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
+    labels, values = read_klopapier()
+    return render_template('chart_line.html', text='Klopapier DM-Drogerie Essen Borbeck', 
+        labels=labels, values=values)
 
-@app.route('/klopapier/<id>')
-def klopapier_x(id):
-    id = int(id)
-    klopapierlabels, klopapiervalues = read_klopapier()
-    line_labels=klopapierlabels[-id:]
-    line_values=klopapiervalues[-id:]
-    return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
+
+# @app.route('/<table>')
+# def line(table):
+#     labels, values = read_api(table)
+#     line_labels=labels
+#     line_values=values
+#     return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+#
+# @app.route('/<table>/<id>')
+# def probes_x(table,id):
+#     id = int(id)
+#     probelabels, probevalues = read_api(table)
+#     line_labels=probelabels[-id:]
+#     line_values=probevalues[-id:]
+#     return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+#
+# @app.route('/<table>/month/<id>')
+# def dataByMonth(table,id):
+#     id = str(id)
+#     probelabels, probevalues = read_api_month(table,id)
+#     line_labels=probelabels
+#     line_values=probevalues
+#     return render_template('line_chart.html', pageuri=table, title='Corona ' + table, max=read_config(table), labels=line_labels, values=line_values)
+#
+#
+# @app.route('/klopapier')
+# def klopapier():
+#     klopapierlabels, klopapiervalues = read_klopapier()
+#     line_labels=klopapierlabels
+#     line_values=klopapiervalues
+#     return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
+#
+# @app.route('/klopapier/<id>')
+# def klopapier_x(id):
+#     id = int(id)
+#     klopapierlabels, klopapiervalues = read_klopapier()
+#     line_labels=klopapierlabels[-id:]
+#     line_values=klopapiervalues[-id:]
+#     return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
+
+def read_markedplace():
+    name = []
+    value = []
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/markplace"
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    return data
+
+def read_markedplaceById(id):
+    name = []
+    value = []
+    data = {}
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/markplace/" + id
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    return data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

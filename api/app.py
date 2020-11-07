@@ -176,186 +176,186 @@ def get_domains(key,value):
     return json_data, 200
 
 # GET full Article list
-@app.route('/api/v1/articles', methods = ["GET"])
-def index():
-    import os, fnmatch
-    master_dictionary = {}
-    listOfMetaFiles = os.listdir('meta/')
-    listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
-    listOfMetaFiles = sorted(listOfMetaFiles)
-    pattern = "*.json"
-    for metaentry in listOfMetaFiles:
-        if fnmatch.fnmatch(metaentry, pattern):
-            filename = metaentry.replace(".json", "")
-            print ("Filename:", filename)
-            master_dictionary[filename] = read_meta_edit(filename)
-    app.logger.info("Debug: ", master_dictionary)
-    return json.dumps(master_dictionary)
-
-# GET Article by ID
-@app.route('/api/v1/articles/<id>', methods = ['GET'])
-def getJsonHandler(id):
-    content = read_data(id)
-    return json.dumps(content)
-
-# PUT Update Artcile
-@app.route('/api/v1/articles/<id>', methods = ['PUT'])
-def postJsonHandler(id):
-    print (request.is_json)
-    content = request.get_json()
-    print (content)
-    write_data(id,content)
-    return jsonify({"result":"ok"})
-
-# POST New Article
-@app.route("/api/v1/articles", methods=["POST"])
-def newarticle():
-    callback = request.form.get('callback')
-    dateTimeObj = datetime.now()
-    id = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S-%f")
-    write_data(id,"")
-    write_new_meta(id)
-    return redirect("http://"+callback+"/admin/editor.html/"+id);
-
-# GET Metadata by ID
-@app.route("/api/v1/metadata/<id>", methods=["GET"])
-def meta_edit(id):
-    content = read_meta_edit(id)
-    return json.dumps(content)
-
-# PUT Update Metadata
-@app.route('/api/v1/metadata', methods=['PUT'])
-def savemetadata():
-    print (request.is_json)
-    content = request.get_json()
-    metadata = {}
-    for a_dict in content:
-        if a_dict['name'] != 'callback':
-            metadata[a_dict['name']] = a_dict['value']
-        if a_dict['name'] == 'id':
-            id = a_dict['value']
-    print ("metadata: ", metadata, " ID: ", id, file=sys.stderr)
-    write_meta(id,metadata)
-    return jsonify({"result":"ok"})
-
-# GET full Page list
-@app.route('/api/v1/pages', methods = ["GET"])
-def pages():
-    import os, fnmatch
-    master_dictionary = {}
-    listOfMetaFiles = os.listdir('pages/')
-    listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
-    listOfMetaFiles = sorted(listOfMetaFiles)
-    pattern = "*.json"
-    for metaentry in listOfMetaFiles:
-        if fnmatch.fnmatch(metaentry, pattern):
-            filename = metaentry.replace(".json", "")
-            print ("Filename:", filename)
-            master_dictionary[filename] = read_page_data(filename)
-    app.logger.info("Debug: ", master_dictionary)
-    return json.dumps(master_dictionary)
-
-# POST New Page
-@app.route("/api/v1/pages", methods=["POST"])
-def newpages():
-    callback = request.form.get('callback')
-    dateTimeObj = datetime.now()
-    id = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S-%f")
-    write_new_page(id)
-    return jsonify({"result": id})
-
-# GET Page by ID
-@app.route('/api/v1/pages/<id>', methods = ['GET'])
-def getPageById(id):
-    content = read_page(id)
-    return json.dumps(content)
-
-# PUT Update Page
-@app.route('/api/v1/pages', methods=['PUT'])
-def udpatePageData():
-    content = request.get_json()
-    print ("content: ", content, file=sys.stderr)
-    metadata = {}
-    childs = []
-    for a_dict in content:
-        name = a_dict['name']
-        value = a_dict['value']
-        if "childs" in name:
-            print ("Name: ", name, " Value: ", value, file=sys.stderr)
-            childs.append(value)
-        else:
-            print ("Name: ", name, " Value: ", value, file=sys.stderr)
-            metadata[name] = value
-        if name == 'id':
-            id = value
-    metadata['childs'] = childs
-    print ("MetaData: ", metadata, file=sys.stderr)
-    write_page_data(id,metadata)
-    # return json.dumps(metadata)
-    return jsonify({"result":"ok"})
-
-# GET Page by Name
-@app.route('/api/v1/rewrite/<path:u_path>')
-def rewrite(u_path):
-    name = u_path
-    print ("name: ", name, file=sys.stderr)
-    id = pageIdByName(name)
-    return jsonify({"id": id})
-
-def pageIdByName(name):
-    master_dictionary = {}
-    listOfMetaFiles = os.listdir('pages/')
-    listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
-    listOfMetaFiles = sorted(listOfMetaFiles)
-    pattern = "*.json"
-    for metaentry in listOfMetaFiles:
-        if fnmatch.fnmatch(metaentry, pattern):
-            filename = metaentry.replace(".json", "")
-            print ("Filename:", filename, file=sys.stderr)
-            metaData = read_page_data(filename)
-            print ("MetaData: ", json.dumps(metaData), file=sys.stderr)
-            if name in metaData['url']:
-                app.logger.info("Debug: ", name)
-                return metaData['id']
-    app.logger.info("Debug: ", master_dictionary)
-    return name
-
-# GET Article by ID
-@app.route('/api/v1/menu/<id>', methods = ['GET'])
-def getMenu(id):
-    content = read_menu(id)
-    return json.dumps(content)
-
-# PUT Update Artcile
-@app.route('/api/v1/menu/<id>', methods = ['PUT'])
-def editMenu(id):
-    print (request.is_json)
-    content = request.get_json()
-    metadata = {}
-    for a_dict in content:
-        if a_dict['name'] != 'callback':
-            metadata[a_dict['name']] = a_dict['value']
-        if a_dict['name'] == 'id':
-            id = a_dict['value']
-    print ("metadata: ", metadata, " ID: ", id, file=sys.stderr)
-    write_menu(id,metadata)
-    return jsonify({"result":"ok"})
-
-    # print (request.is_json)
-    # content = request.get_json()
-    # print (content)
-    # write_menu(id,content)
-    # return jsonify({"result":"ok"})
-
-# POST New Article
-# @app.route("/api/v1/menu", methods=["POST"])
-# def newMenu():
+# @app.route('/api/v1/articles', methods = ["GET"])
+# def index():
+#     import os, fnmatch
+#     master_dictionary = {}
+#     listOfMetaFiles = os.listdir('meta/')
+#     listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
+#     listOfMetaFiles = sorted(listOfMetaFiles)
+#     pattern = "*.json"
+#     for metaentry in listOfMetaFiles:
+#         if fnmatch.fnmatch(metaentry, pattern):
+#             filename = metaentry.replace(".json", "")
+#             print ("Filename:", filename)
+#             master_dictionary[filename] = read_meta_edit(filename)
+#     app.logger.info("Debug: ", master_dictionary)
+#     return json.dumps(master_dictionary)
+#
+# # GET Article by ID
+# @app.route('/api/v1/articles/<id>', methods = ['GET'])
+# def getJsonHandler(id):
+#     content = read_data(id)
+#     return json.dumps(content)
+#
+# # PUT Update Artcile
+# @app.route('/api/v1/articles/<id>', methods = ['PUT'])
+# def postJsonHandler(id):
+#     print (request.is_json)
+#     content = request.get_json()
+#     print (content)
+#     write_data(id,content)
+#     return jsonify({"result":"ok"})
+#
+# # POST New Article
+# @app.route("/api/v1/articles", methods=["POST"])
+# def newarticle():
 #     callback = request.form.get('callback')
 #     dateTimeObj = datetime.now()
 #     id = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S-%f")
 #     write_data(id,"")
 #     write_new_meta(id)
 #     return redirect("http://"+callback+"/admin/editor.html/"+id);
+#
+# # GET Metadata by ID
+# @app.route("/api/v1/metadata/<id>", methods=["GET"])
+# def meta_edit(id):
+#     content = read_meta_edit(id)
+#     return json.dumps(content)
+#
+# # PUT Update Metadata
+# @app.route('/api/v1/metadata', methods=['PUT'])
+# def savemetadata():
+#     print (request.is_json)
+#     content = request.get_json()
+#     metadata = {}
+#     for a_dict in content:
+#         if a_dict['name'] != 'callback':
+#             metadata[a_dict['name']] = a_dict['value']
+#         if a_dict['name'] == 'id':
+#             id = a_dict['value']
+#     print ("metadata: ", metadata, " ID: ", id, file=sys.stderr)
+#     write_meta(id,metadata)
+#     return jsonify({"result":"ok"})
+#
+# # GET full Page list
+# @app.route('/api/v1/pages', methods = ["GET"])
+# def pages():
+#     import os, fnmatch
+#     master_dictionary = {}
+#     listOfMetaFiles = os.listdir('pages/')
+#     listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
+#     listOfMetaFiles = sorted(listOfMetaFiles)
+#     pattern = "*.json"
+#     for metaentry in listOfMetaFiles:
+#         if fnmatch.fnmatch(metaentry, pattern):
+#             filename = metaentry.replace(".json", "")
+#             print ("Filename:", filename)
+#             master_dictionary[filename] = read_page_data(filename)
+#     app.logger.info("Debug: ", master_dictionary)
+#     return json.dumps(master_dictionary)
+#
+# # POST New Page
+# @app.route("/api/v1/pages", methods=["POST"])
+# def newpages():
+#     callback = request.form.get('callback')
+#     dateTimeObj = datetime.now()
+#     id = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S-%f")
+#     write_new_page(id)
+#     return jsonify({"result": id})
+#
+# # GET Page by ID
+# @app.route('/api/v1/pages/<id>', methods = ['GET'])
+# def getPageById(id):
+#     content = read_page(id)
+#     return json.dumps(content)
+#
+# # PUT Update Page
+# @app.route('/api/v1/pages', methods=['PUT'])
+# def udpatePageData():
+#     content = request.get_json()
+#     print ("content: ", content, file=sys.stderr)
+#     metadata = {}
+#     childs = []
+#     for a_dict in content:
+#         name = a_dict['name']
+#         value = a_dict['value']
+#         if "childs" in name:
+#             print ("Name: ", name, " Value: ", value, file=sys.stderr)
+#             childs.append(value)
+#         else:
+#             print ("Name: ", name, " Value: ", value, file=sys.stderr)
+#             metadata[name] = value
+#         if name == 'id':
+#             id = value
+#     metadata['childs'] = childs
+#     print ("MetaData: ", metadata, file=sys.stderr)
+#     write_page_data(id,metadata)
+#     # return json.dumps(metadata)
+#     return jsonify({"result":"ok"})
+#
+# # GET Page by Name
+# @app.route('/api/v1/rewrite/<path:u_path>')
+# def rewrite(u_path):
+#     name = u_path
+#     print ("name: ", name, file=sys.stderr)
+#     id = pageIdByName(name)
+#     return jsonify({"id": id})
+#
+# def pageIdByName(name):
+#     master_dictionary = {}
+#     listOfMetaFiles = os.listdir('pages/')
+#     listOfMetaFiles = natsort.natsorted(listOfMetaFiles,reverse=True)
+#     listOfMetaFiles = sorted(listOfMetaFiles)
+#     pattern = "*.json"
+#     for metaentry in listOfMetaFiles:
+#         if fnmatch.fnmatch(metaentry, pattern):
+#             filename = metaentry.replace(".json", "")
+#             print ("Filename:", filename, file=sys.stderr)
+#             metaData = read_page_data(filename)
+#             print ("MetaData: ", json.dumps(metaData), file=sys.stderr)
+#             if name in metaData['url']:
+#                 app.logger.info("Debug: ", name)
+#                 return metaData['id']
+#     app.logger.info("Debug: ", master_dictionary)
+#     return name
+#
+# # GET Article by ID
+# @app.route('/api/v1/menu/<id>', methods = ['GET'])
+# def getMenu(id):
+#     content = read_menu(id)
+#     return json.dumps(content)
+#
+# # PUT Update Artcile
+# @app.route('/api/v1/menu/<id>', methods = ['PUT'])
+# def editMenu(id):
+#     print (request.is_json)
+#     content = request.get_json()
+#     metadata = {}
+#     for a_dict in content:
+#         if a_dict['name'] != 'callback':
+#             metadata[a_dict['name']] = a_dict['value']
+#         if a_dict['name'] == 'id':
+#             id = a_dict['value']
+#     print ("metadata: ", metadata, " ID: ", id, file=sys.stderr)
+#     write_menu(id,metadata)
+#     return jsonify({"result":"ok"})
+#
+#     # print (request.is_json)
+#     # content = request.get_json()
+#     # print (content)
+#     # write_menu(id,content)
+#     # return jsonify({"result":"ok"})
+#
+# # POST New Article
+# # @app.route("/api/v1/menu", methods=["POST"])
+# # def newMenu():
+# #     callback = request.form.get('callback')
+# #     dateTimeObj = datetime.now()
+# #     id = dateTimeObj.strftime("%Y-%m-%d-%H-%M-%S-%f")
+# #     write_data(id,"")
+# #     write_new_meta(id)
+# #     return redirect("http://"+callback+"/admin/editor.html/"+id);
 
 
 def p_debug(str):

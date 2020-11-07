@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+  {% include "head.tmpl" %}
+</head>
+
+<body>
+  <div class="grid-container">
+    <div class="nav">
+    </div>
+    <div class="content">
+      <center>
+        <h1>{{ title }}</h1>
+      </center>
+    </div>
+    <div id="angebote" style="width: 800px;  position: relative; left: 100px;">
+    <!-- <table> -->
+       {% for offers in data %}
+         <div style="width: 800px"><h3>{{ offers.title }}</h3></div>
+         <div style="float: left; width: 300px"><img width="290" src="{{ offers.image }}"></div>
+         <div style="">
+           <div style="float: right; width: 500px;">Anbieter: {{ offers.seller }}</div>
+           <div style="float: right; width: 500px;">Preis: {{ offers.price }}</div>
+           <div style="float: right; width: 500px;">Typ: {% if offers.type == "offer" %}Verkaufen{% else %}Gesuch{% endif %}</div>
+           <div style="float: right; width: 500px;">ID: {{ offers.id }}
+           </div>
+           <div style="float: right; width: 500px;">Beschreibung: {{ offers.description }}</div>
+         </div>
+         <div style="clear: both;"></div>
+         <hr>
+       {% endfor %}
+      <!-- </table> -->
+    </div>
+  </div>
+</body>
+</html>

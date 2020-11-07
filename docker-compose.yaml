@@ -4,6 +4,7 @@ services:
   corona:
     image: coronacharts
     build: .
+    restart: always
     dns:
       - 8.8.8.8
       - 9.9.9.9
@@ -15,6 +16,7 @@ services:
   api:
     image: cms-api:1.0
     build: api
+    restart: always
     env_file:
       - .env
     environment:
@@ -27,6 +29,7 @@ services:
   mongo:
     image: mongojson
     build: mongoserver
+    restart: always
     ports:
       - "27017:27017"
     volumes:
