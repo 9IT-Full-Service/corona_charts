@@ -41,7 +41,7 @@ new Chart(document.getElementById("line-chart-current"), {
         data : [{% for item in values_current %}{{ item }},{% endfor %}],
         label: "Current",
         borderColor: "#3e95cd",
-        fill: false
+        fill: true
       }
     ]
   },
@@ -61,7 +61,7 @@ new Chart(document.getElementById("line-chart-average"), {
         data : [{% for item in values_average %}{{ item }},{% endfor %}],
         label: "Average",
         borderColor: "#3e95cd",
-        fill: false
+        fill: true
       }
     ]
   },
@@ -81,7 +81,7 @@ new Chart(document.getElementById("line-chart-cases"), {
         data : [{% for item in values_cases %}{{ item }},{% endfor %}],
         label: "Cases",
         borderColor: "#3e95cd",
-        fill: false
+        fill: true
       }
     ]
   },
@@ -101,7 +101,7 @@ new Chart(document.getElementById("line-chart-probes"), {
         data : [{% for item in values_probes %}{{ item }},{% endfor %}],
         label: "Probes",
         borderColor: "#3e95cd",
-        fill: false
+        fill: true
       }
     ]
   },
