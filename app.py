@@ -102,6 +102,8 @@ def klopapier():
     return render_template('chart_line.html', text='Klopapier DM-Drogerie Essen Borbeck',
         labels=labels, values=values)
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
 
 # @app.route('/<table>')
 # def line(table):
@@ -142,30 +144,27 @@ def klopapier():
 #     line_values=klopapiervalues[-id:]
 #     return render_template('line_klopapier.html', title='Klopapier DM-Drogerie Essen Borbeck', max=read_config("klopapier"), labels=line_labels, values=line_values)
 
-def read_markedplace():
-    name = []
-    value = []
-    data = {}
-    import urllib, json
-    import urllib.request
-    apiurl = "http://api:4006/api/v1/markplace"
-    response = urllib.request.urlopen(apiurl)
-    data = json.loads(response.read())
-    return data
-
-def read_markedplaceById(id):
-    name = []
-    value = []
-    data = {}
-    import urllib, json
-    import urllib.request
-    apiurl = "http://api:4006/api/v1/markplace/" + id
-    response = urllib.request.urlopen(apiurl)
-    data = json.loads(response.read())
-    return data
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+# def read_markedplace():
+#     name = []
+#     value = []
+#     data = {}
+#     import urllib, json
+#     import urllib.request
+#     apiurl = "http://api:4006/api/v1/markplace"
+#     response = urllib.request.urlopen(apiurl)
+#     data = json.loads(response.read())
+#     return data
+#
+# def read_markedplaceById(id):
+#     name = []
+#     value = []
+#     data = {}
+#     import urllib, json
+#     import urllib.request
+#     apiurl = "http://api:4006/api/v1/markplace/" + id
+#     response = urllib.request.urlopen(apiurl)
+#     data = json.loads(response.read())
+#     return data
 
 # def read_cases():
 #     clabels = []
