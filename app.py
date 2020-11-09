@@ -1,7 +1,15 @@
 from flask import Flask, Markup, render_template, redirect, url_for
 import json
+import datetime
 
 app = Flask(__name__)
+
+@app.after_request
+def add_header(response):
+    expiry_time = datetime.datetime.utcnow() + datetime.timedelta(0.1)
+    response.headers['Cache-Control'] = 'public, max-age=360'
+    response.headers["Expires"] = expiry_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
+    return response
 
 def read_api(table):
     labels = []
@@ -91,7 +99,7 @@ def linechart(table):
 @app.route('/klopapier')
 def klopapier():
     labels, values = read_klopapier()
-    return render_template('chart_line.html', text='Klopapier DM-Drogerie Essen Borbeck', 
+    return render_template('chart_line.html', text='Klopapier DM-Drogerie Essen Borbeck',
         labels=labels, values=values)
 
 
