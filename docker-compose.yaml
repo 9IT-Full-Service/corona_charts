@@ -14,7 +14,7 @@ services:
       - cmsnetwork
 
   api:
-    image: cms-api:1.0
+    image: basecoronaapi:latest
     build: api
     restart: always
     env_file:

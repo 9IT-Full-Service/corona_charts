@@ -25,6 +25,34 @@ def read_api(table):
         cases.append(label['val'])
     return (labels, cases)
 
+def read_api_day(table):
+    labels = []
+    cases = []
+    data = {}
+    X = int(0)
+    Y = int(0)
+    Z = int(0)
+    sum = int(0)
+    count = int(0)
+    import urllib, json
+    import urllib.request
+    apiurl = "http://api:4006/api/v1/corona/" + table
+    response = urllib.request.urlopen(apiurl)
+    data = json.loads(response.read())
+    for label in data['cases']:
+        Y=int(label['val'])
+        Z=Y-X
+        X=Y
+        sum=sum+Z
+        count=count+1
+        if count > 1:
+            labels.append(label['name'])
+            cases.append(Z)
+    average=sum/count
+    av = '{:06.2f}'.format(average)
+    # t = ("A: " + str(av) + " sum: " + str(sum) + " count: " + str(count) )
+    return (labels, cases, av)
+
 def read_api_month(table,month):
     labels = []
     cases = []
@@ -85,6 +113,11 @@ def linecharts():
             labels_cases=labels_cases,     values_cases=values_cases,
             labels_probes=labels_probes,   values_probes=values_probes
         )
+
+@app.route('/view/charts/diff/<table>', methods=['GET'])
+def viewdiff(table):
+    labels, values, average = read_api_day(table)
+    return render_template('chart_line.html', text=table + " Average: " + str(average), labels=labels, values=values )
 
 @app.route('/view/charts/<table>')
 def linechart(table):
